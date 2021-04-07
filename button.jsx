@@ -1,6 +1,7 @@
+///button that increses count when clicked
 function Button() {
   const [counter, setCounter] = useState(0);
-	return <button>{Math.random()}</button>;
+	return <button onClick={() => setCounter(counter+2)}>{counter}</button>;
 }
 
 ReactDOM.render(
