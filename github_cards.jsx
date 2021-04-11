@@ -26,13 +26,22 @@ class Card extends React.Component {
 }
 
 class Form extends React.Component {
+  state = {userName: '' };
+  handleSubmit = async (event) => {
+    event.preventDefault();  
+    const resp = await axios.get(`https://api.github.com/users/${this.state.userName}`);
+    console.log(resp.data);
+  };
   render() {
     return (
-      <form action="">
-        <input type="text" placeholder="GitHub username" />
+      <form onSubmit={this.handleSubmit}>
+        <input type="text" 
+          value={this.state.userName}
+          onChange={event => this.setState({userName: event.target.value})}
+          placeholder="GitHub username" required />
         <button>Add card</button>
       </form>
-    )
+    );
   }
 }
 
