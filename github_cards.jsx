@@ -6,7 +6,7 @@ const testData = [
 
 const CardList = (props) => (
 	<div>
-  	{props.profiles.map(profile => <Card {...profile}/>)}
+  	{props.profiles.map(profile => <Card  key={profile.id}{...profile}/>)}
 	</div>
 );
 
@@ -30,7 +30,8 @@ class Form extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();  
     const resp = await axios.get(`https://api.github.com/users/${this.state.userName}`);
-    console.log(resp.data);
+    this.props.onSubmit(resp.data);
+    this.setState({ userName: ''});
   };
   render() {
     return (
@@ -49,14 +50,19 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      profiles: testData,
+      profiles: [],
     };
   }
+    addNewProfile = (profileData) => {
+      this.setState(prevState => ({
+        profiles: [...prevState.profiles, profileData]
+      }));
+  };
 	render() {
   	return (
     	<div>
     	  <div className="header">{this.props.title}</div>
-        <Form />
+        <Form onSubmit={this.addNewProfile}/>
         <CardList profiles={this.state.profiles} />
     	</div>
     );
